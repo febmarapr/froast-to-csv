@@ -26,6 +26,10 @@ No third-party packages are required to save JSON or export CSV files.
 Use `save_json.py` to save pasted or piped API responses. It inspects the JSON and
 writes it into `froast_json/` with an appropriate filename automatically.
 
+If you need sample JSON to give to `save_json.py`, open the
+[example Froast API response](https://api.froast.io/users/1/posts?order=asc&truncate=false),
+copy the raw JSON response, and paste or pipe it into the script.
+
 ```bash
 # from clipboard
 wl-paste | python3 save_json.py
