@@ -7,7 +7,6 @@ The project processes locally saved JSON responses from the Froast API or archiv
 ## Requirements
 
 - Python 3
-- No third-party Python packages
 
 The project uses only the Python standard library.
 
