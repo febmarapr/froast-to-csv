@@ -1,55 +1,64 @@
 # froast-to-csv
 
-Turn JSON data from [archive.froast.io](https://archive.froast.io) into a single CSV file.
+A utility for converting JSON data from [Froast Archive](https://archive.froast.io) into a consolidated CSV file.
 
-This tool makes no network requests of its own. You collect JSON responses from the
-Froast API (or the archive website) and save them as local files, then `main.py`
-converts those files into a SQLite database and finally into one CSV.
+The project processes locally saved JSON responses from the Froast API or archive website. It does not make network requests. JSON files are imported into a SQLite database or exported directly to CSV using the provided Python scripts.
 
-## Required folders
+## Requirements
 
-- **`froast_json/`** — all JSON files you save from the Froast API are stored here.
-  `save_json.py` writes into this folder automatically.
+- Python 3
+- No third-party Python packages
 
-## Required dependencies
+The project uses only the Python standard library.
 
-Only the Python standard library is needed:
+## Project structure
 
-```bash
-python3 -m pip install
-```
+Place saved JSON response files in the `froast_json/` directory. The `save_json.py` script creates and uses this directory automatically.
 
-No third-party packages are required to save JSON or export CSV files.
+## Saving JSON responses
 
-## Save JSON data into files
+Use `save_json.py` to save JSON data from the Froast API. The script accepts pasted or piped input, inspects the JSON content, and assigns an appropriate filename in `froast_json/`.
 
-Use `save_json.py` to save pasted or piped API responses. It inspects the JSON and
-writes it into `froast_json/` with an appropriate filename automatically.
+To obtain an example response, open the [Froast API example](https://api.froast.io/users/1/posts?order=asc&truncate=false), copy the raw JSON response, and provide it to the script.
 
-If you need sample JSON to give to `save_json.py`, open the
-[example Froast API response](https://api.froast.io/users/1/posts?order=asc&truncate=false),
-copy the raw JSON response, and paste or pipe it into the script.
+### Read from the clipboard
+
+On systems with `wl-paste` installed:
 
 ```bash
-# from clipboard
 wl-paste | python3 save_json.py
-
-# interactively
-python3 save_json.py
-# paste JSON, press Enter, repeat (Ctrl+C or Ctrl+D to quit)
 ```
 
-## Convert JSON files to CSV
+### Enter JSON interactively
 
-Use `main.py --export-users` to combine every saved user-post JSON file in
-`froast_json/` into a single CSV:
+```bash
+python3 save_json.py
+```
+
+Paste the JSON response and press Enter. Repeat as needed. Use Ctrl+C or Ctrl+D to exit.
+
+## Exporting JSON data to CSV
+
+To combine all saved user-post JSON files in `froast_json/` into a single CSV file, run:
 
 ```bash
 python3 main.py --export-users
 ```
 
-Output: `all_user_posts.csv`
+The generated file is:
 
-You can also import the JSON files into a SQLite database first
-(`python3 main.py --import`) and then export from there, but the direct
-`--export-users` path reads the JSON files and writes one CSV in a single step.
+```text
+all_user_posts.csv
+```
+
+## SQLite import and export
+
+The project also supports importing saved JSON files into a SQLite database before exporting the data.
+
+Import the files with:
+
+```bash
+python3 main.py --import
+```
+
+For a direct export that does not require the intermediate database, use `--export-users` as described above.
